@@ -1,0 +1,43 @@
+model:
+  hidden_size: 16
+  n_heads: 2
+  dropout: 0.1
+  n_static_inputs: 4
+  n_known_inputs: 6
+  n_observed_inputs: 5
+  n_targets: 1
+  encoder_length: 24
+  decoder_length: 6
+  quantiles: [0.1, 0.5, 0.9]
+
+data:
+  csv_path: ''
+  target_col: ridership
+  time_col: timestamp
+  group_col: station_id
+  static_cols: [station_id, borough, line, is_terminal]
+  known_cols: [hour, dow, month, is_holiday, temp_f, precip_in]
+  observed_cols: [ridership_lag_1h, ridership_lag_24h, ridership_lag_168h,
+                  transfers, delay_count]
+  train_end: '2024-01-20'
+  val_end: '2024-01-25'
+
+train:
+  epochs: 2
+  batch_size: 8
+  lr: 1.0e-3
+  weight_decay: 1.0e-5
+  grad_clip: 1.0
+  early_stopping_patience: 3
+  num_workers: 0
+  seed: 0
+  device: cpu
+  checkpoint_dir: checkpoints
+
+mlops:
+  mlflow_tracking_uri: file:./mlruns
+  mlflow_experiment: tft-transit-smoke
+  wandb_project: tft-transit-smoke
+  wandb_entity: null
+  register_model: false
+  register_threshold_p50_mape: 100.0
