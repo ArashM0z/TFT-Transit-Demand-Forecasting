@@ -1,5 +1,43 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "portfolio-repo"
-version = "0.1.0"
-requires-python = ">=3.11"
-dependencies = []
+name = "tft-transit"
+version = "0.3.0"
+description = "Temporal Fusion Transformer for station-level transit ridership forecasting"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "Arash Mozhdehi" }]
+dependencies = [
+  "torch>=2.1",
+  "numpy>=1.26",
+  "pandas>=2.1",
+  "pyyaml>=6.0",
+  "tqdm>=4.66",
+  "scikit-learn>=1.4",
+  "mlflow>=2.16",
+  "wandb>=0.17",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "pytest-cov>=4", "ruff>=0.5", "mypy>=1.10"]
+
+[project.scripts]
+tft-train = "tft.cli:train_main"
+tft-eval = "tft.cli:eval_main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-q --strict-markers"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM"]
